@@ -1,0 +1,88 @@
+DROP DATABASE IF EXISTS TestingSytem_Assignment;
+
+CREATE DATABASE TestingSytem_Assignment;
+USE TestingSystem_Assignment;
+
+CREATE TABLE Deparment(
+DeparmentID			TINYINT UNSIGNED PRIMARY KEY,
+DeparmentName		ENUM ('sale','maketing') CHECK(LENGTH(Deparment)>=8) 
+);
+
+CREATE TABLE Position1(
+PositionID 			TINYINT UNSIGNED PRIMARY KEY ,
+PositionName		ENUM('Dev','Test','Scrum Master','PM') CHECK(LENGTH(Position)>=11)
+);
+
+CREATE TABLE `Account` (
+AccountID		TINYINT UNSIGNED PRIMARY KEY,
+Email			VARCHAR(50) UNIQUE KEY,
+Usename			VARCHAR(20)UNIQUE KEY CHECK (LENGTH(Usename)>=8),
+FullName		VARCHAR(20)UNIQUE KEY CHECK (LENGTH(Fullname)>=8),
+DeparmentID		TINYINT UNSIGNED ,
+PositionID		TINYINT UNSiGNED NOT NULL,
+GreateDate		DATE,
+FOREIGN KEY (DeparmentID) REFERENCES Deparment(DeparmentID)
+);
+
+CREATE TABLE `Group` (
+GroupID			TINYINT UNSIGNED PRIMARY KEY,
+GroupName		VARCHAR(20) NOT NULL  CHECK(LENGTH(GroupName)>=8),
+CreatorID		TINYINT UNSIGNED,
+CreateDate		DATE,
+FOREIGN KEY (Usename) REFERENCES CreatorID(Usename)
+);
+
+CREATE TABLE GroupAccount (
+GroupID			TINYINT UNSIGNED PRIMARY KEY ,
+AccountID		TINYINT UNSIGNED UNIQUE KEY NOT NULL,
+JoinDate		DATE
+);
+
+CREATE TABLE TypeQuestion (
+TypeID		TINYINT UNSIGNED PRIMARY KEY,
+TypeName	ENUM('Essay','Multiple-Choice') NOT NULL CHECK(LENGTH(TypeName)>=20)
+);
+
+CREATE TABLE CategoryQuestion (
+CategoryID		TINYINT UNSIGNED PRIMARY KEY ,
+CategoryName	ENUM('java','NET','SQL','Postman','Ruby') NOT NULL CHECK (LENGTH(CatepgryName)>=8)
+);
+
+CREATE TABLE Question (
+QuestionID		TINYINT UNSIGNED PRIMARY KEY ,
+Content			VARCHAR(50) NOT NULL ,
+CategoryID		TINYINT UNSIGNED,
+TypeID			TINYINT UNSIGNED,
+CreatorID		TINYINT UNSIGNED,
+CreateDate		DATE,
+FOREIGN KEY(categoryID) REFERENCES categoryquestion(categoryID),
+FOREIGN KEY(TypeID)REFERENCES TypeQuestion(TypeID)
+);
+
+CREATE TABLE Answer (
+AnswerID		TINYINT UNSIGNED PRIMARY KEY,
+Content			VARCHAR(50) NOT NULL,
+QuestiomID		SMALLINT UNSIGNED,
+isCorrect		ENUM('No','Yes') DEFAULT('YES')
+);
+
+CREATE TABLE Exam (
+ExamID		TINYINT UNSIGNED PRIMARY KEY,
+`Code`		VARCHAR(50) UNIQUE KEY NOT NULL,
+Tile		VARCHAR(50) NOT NULL,
+CategoryID	TINYINT UNSIGNED UNIQUE KEY ,
+Duration	TIME,
+CreatorID	TINYINT UNSIGNED UNIQUE KEY ,
+CrateDate	DATE	
+);
+
+CREATE TABLE ExamQuestion (
+ExamID		TINYINT UNSIGNED,
+QuestioniD 	TINYINT UNSIGNED,
+FOREIGN KEY (examid) REFERENCES exam(examid),
+FOREIGN KEY (Questionid) REFERENCES Question(QuenstionID)
+);
+
+
+
+
